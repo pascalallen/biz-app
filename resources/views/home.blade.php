@@ -15,7 +15,9 @@
                     @endif
 
                     You are logged in!
-                    <a href="/api/quickbooks">Activate Quickbooks</a>
+                    @if(!Auth::user()->access_token)
+                        <a href="/api/quickbooks/init">Activate Quickbooks</a>
+                    @endif
                 </div>
             </div>
         </div>
