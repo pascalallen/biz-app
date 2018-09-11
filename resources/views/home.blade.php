@@ -15,6 +15,7 @@
                     @endif
 
                     You are logged in!
+                    <a href="/api/quickbooks">Activate Quickbooks</a>
                 </div>
             </div>
         </div>

@@ -27,7 +27,7 @@ class QuickbooksController extends Controller
         ));
         $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
         $authorizationUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
-        header("Location: ".$authorizationUrl);
+        header("Location: ".$authorizationUrl); // Quickbooks docs say to use `header()` to redirect
     }
 
     /**
