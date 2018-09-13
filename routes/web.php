@@ -18,4 +18,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/connect-quickbooks', 'QuickbooksController@connect');
 Route::group(['prefix' => 'api'], function() {
     Route::resource('accounts', 'API\AccountsController');
+    Route::resource('invoices', 'API\InvoiceController');
 });
