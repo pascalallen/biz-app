@@ -1,11 +1,18 @@
+import ReactDOM from "react-dom";
+import React from 'react';
+import Main from './components/Main';
+import { Provider } from 'react-redux';
+import store from "./store"
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes React and other helpers. It's a great starting point while
- * building robust, powerful web applications using React + Laravel.
- */
 
 require('./bootstrap');
 
-/* Import the Main component */
-import Main from './components/Main';
+const app = document.getElementById('root');
+
+    ReactDOM.render(
+        <Provider store={store}>
+            <div>
+                <Main />
+            </div>
+        </Provider>
+        , app);
