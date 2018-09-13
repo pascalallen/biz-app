@@ -20,6 +20,7 @@
                     @else
                         <a href="/api/quickbooks/accounts">Get accounts</a>
                     @endif
+                    <div id="root"></div>
                 </div>
             </div>
         </div>
