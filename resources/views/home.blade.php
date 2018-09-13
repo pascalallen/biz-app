@@ -16,7 +16,9 @@
 
                     You are logged in!
                     @if(!Auth::user()->access_token)
-                        <a href="/api/quickbooks/init">Activate Quickbooks</a>
+                        <a href="/connect-quickbooks">Activate Quickbooks</a>
+                    @else
+                        <a href="/api/quickbooks/accounts">Get accounts</a>
                     @endif
                 </div>
             </div>
