@@ -16,7 +16,9 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/connect-quickbooks', 'QuickbooksController@connect');
-Route::group(['prefix' => 'api'], function() {
-    Route::resource('accounts', 'API\AccountsController');
+
+Route::group(['prefix' => 'api', 'middleware' => 'auth'], function() {
+    Route::resource('accounts', 'API\AccountController');
     Route::resource('invoices', 'API\InvoiceController');
+    Route::resource('customers', 'API\CustomerController');
 });

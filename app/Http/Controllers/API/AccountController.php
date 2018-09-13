@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use QuickBooksOnline\API\DataService\DataService;
 use Auth;
 
-class AccountsController extends Controller
+class AccountController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -71,19 +71,8 @@ class AccountsController extends Controller
 
             foreach ($accounts as $account) {
                 $i++;
-                $data->push([
-                    'id' => $account->Id,
-                    'name' => $account->Name,
-                    'description' => $account->Description,
-                    'active' => $account->Active,
-                    'classification' => $account->Classification,
-                    'account-type' => $account->AccountType,
-                    'account-number' => $account->AcctNum,
-                    'bank-number' => $account->BankNum,
-                    'opening-balance' => $account->OpeningBalance,
-                    'opening-balance-date' => $account->OpeningBalanceDate,
-                    'current-balance' => $account->CurrentBalance,
-                ]);
+
+                $data->push($account);
             }
         }
 
@@ -175,19 +164,7 @@ class AccountsController extends Controller
 
         $data = collect();
 
-        $data->push([
-            'id' => $account->Id,
-            'name' => $account->Name,
-            'description' => $account->Description,
-            'active' => $account->Active,
-            'classification' => $account->Classification,
-            'account-type' => $account->AccountType,
-            'account-number' => $account->AcctNum,
-            'bank-number' => $account->BankNum,
-            'opening-balance' => $account->OpeningBalance,
-            'opening-balance-date' => $account->OpeningBalanceDate,
-            'current-balance' => $account->CurrentBalance,
-        ]);
+        $data->push($account);
 
         return response()->json([
             'data' => $data

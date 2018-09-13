@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use QuickBooksOnline\API\DataService\DataService;
 use Auth;
 
-class InvoiceController extends Controller
+class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -52,10 +52,10 @@ class InvoiceController extends Controller
           $dataService->updateOAuth2Token($accessToken);
 
           $data = collect();
-          // Iterate through all Accounts, even if it takes multiple pages
+          // Iterate through all Customers, even if it takes multiple pages
           $i = 1;
           while (1) {
-            $invoices = $dataService->FindAll('Invoice', $i, 1000);
+            $customers = $dataService->FindAll('Customer', $i, 1000);
 
             $error = $dataService->getLastError();
 
@@ -65,14 +65,14 @@ class InvoiceController extends Controller
                 ], $error->getHttpStatusCode());
             }
 
-            if (!$invoices || (0==count($invoices))) {
+            if (!$customers || (0==count($customers))) {
                 break;
             }
 
-            foreach ($invoices as $invoice) {
+            foreach ($customers as $customer) {
                 $i++;
 
-                $data->push($invoice);
+                $data->push($customer);
             }
         }
 
@@ -135,8 +135,8 @@ class InvoiceController extends Controller
 
         if ($error) {
             return response()->json([
-            'statusText' => $error->getResponseBody(),
-        ], $error->getHttpStatusCode());
+                'statusText' => $error->getResponseBody(),
+            ], $error->getHttpStatusCode());
         }
 
         $user->access_token = $accessToken->getAccessToken();
@@ -145,9 +145,8 @@ class InvoiceController extends Controller
 
         $dataService->updateOAuth2Token($accessToken);
 
-        $data = collect();
 
-        $invoice = $dataService->FindById('invoice', $id);
+        $customer = $dataService->FindById('customer', $id);
 
         $error = $dataService->getLastError();
 
@@ -157,13 +156,15 @@ class InvoiceController extends Controller
             ], $error->getHttpStatusCode());
         }
 
-        if (!$invoice) {
+        if (!$customer) {
             return response()->json([
-                'statusText' => 'Invoice not found.',
+                'statusText' => 'Customer not found.',
             ], 404);
         }
 
-        $data->push($invoice);
+        $data = collect();
+
+        $data->push($customer);
 
         return response()->json([
             'data' => $data
