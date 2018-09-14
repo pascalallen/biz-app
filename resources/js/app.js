@@ -11,8 +11,6 @@ const app = document.getElementById('root');
 
     ReactDOM.render(
         <Provider store={store}>
-            <div>
-                <Main />
-            </div>
+            <Main />
         </Provider>
         , app);
