@@ -66081,71 +66081,75 @@ var Main = function (_React$Component) {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_5__styles__["a" /* CenterRow */],
           null,
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'h1',
-            null,
-            'Invoices'
-          ),
           this.props.invoice.fetchingAll ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Loading__["a" /* default */], null) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["b" /* Table */],
-            { responsive: true, condensed: true },
+            'div',
+            null,
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'thead',
+              'h1',
               null,
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'tr',
-                null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  'th',
-                  null,
-                  'Doc No.'
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  'th',
-                  null,
-                  'Balance'
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  'th',
-                  null,
-                  'Transaction Date'
-                ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  'th',
-                  null,
-                  'Due Date'
-                )
-              )
+              'Invoices'
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'tbody',
-              null,
-              this.props.invoice.all && this.props.invoice.all.map(function (invoice, i) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["b" /* Table */],
+              { responsive: true, condensed: true },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'thead',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                   'tr',
                   null,
                   __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'td',
+                    'th',
                     null,
-                    invoice.DocNumber
+                    'Doc No.'
                   ),
                   __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'td',
+                    'th',
                     null,
-                    invoice.Balance
+                    'Balance'
                   ),
                   __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'td',
+                    'th',
                     null,
-                    invoice.TxnDate
+                    'Transaction Date'
                   ),
                   __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'td',
+                    'th',
                     null,
-                    invoice.DueDate
+                    'Due Date'
                   )
-                );
-              })
+                )
+              ),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'tbody',
+                null,
+                this.props.invoice.all && this.props.invoice.all.map(function (invoice, i) {
+                  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'tr',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                      'td',
+                      null,
+                      invoice.DocNumber
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                      'td',
+                      null,
+                      invoice.Balance
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                      'td',
+                      null,
+                      invoice.TxnDate
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                      'td',
+                      null,
+                      invoice.DueDate
+                    )
+                  );
+                })
+              )
             )
           )
         )

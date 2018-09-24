@@ -43,28 +43,30 @@ class Main extends React.Component {
     return (
     <div className="container">
         <CenterRow>
-            <h1>Invoices</h1>
             {this.props.invoice.fetchingAll ? <Loading />
-            : <Table responsive condensed>
-                <thead>
-                    <tr>
-                        <th>Doc No.</th>
-                        <th>Balance</th>
-                        <th>Transaction Date</th>
-                        <th>Due Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.props.invoice.all && this.props.invoice.all.map((invoice,i) => (
-                    <tr>
-                        <td>{invoice.DocNumber}</td>
-                        <td>{invoice.Balance}</td>
-                        <td>{invoice.TxnDate}</td>
-                        <td>{invoice.DueDate}</td>
-                    </tr>
-                    ))}
-                </tbody>
-            </Table>
+            : <div>
+                <h1>Invoices</h1>
+                <Table responsive condensed>
+                    <thead>
+                        <tr>
+                            <th>Doc No.</th>
+                            <th>Balance</th>
+                            <th>Transaction Date</th>
+                            <th>Due Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.props.invoice.all && this.props.invoice.all.map((invoice,i) => (
+                        <tr>
+                            <td>{invoice.DocNumber}</td>
+                            <td>{invoice.Balance}</td>
+                            <td>{invoice.TxnDate}</td>
+                            <td>{invoice.DueDate}</td>
+                        </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            </div>
             }
         </CenterRow>
     </div>
