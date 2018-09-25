@@ -4,7 +4,6 @@ import { Row } from 'react-bootstrap';
 export const CenterRow = styled(Row)`
   display: flex;
   justify-content: center;
-  align-items: center;
 `;
 
 export const TooltipDiv = styled.div`

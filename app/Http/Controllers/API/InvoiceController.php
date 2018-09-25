@@ -11,10 +11,11 @@ class InvoiceController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * 
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
@@ -32,50 +33,54 @@ class InvoiceController extends Controller
             'refreshTokenKey' => $user->refresh_token,
             'QBORealmID' => $user->realm_id,
             'baseUrl' => "Development" // For production: Production
-          ));
+		));
 
-          $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
-          $accessToken = $OAuth2LoginHelper->refreshToken();
+		$OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
+		$accessToken = $OAuth2LoginHelper->refreshToken();
 
-          $error = $OAuth2LoginHelper->getLastError();
+		$error = $OAuth2LoginHelper->getLastError();
 
-          if ($error) {
-              return response()->json([
-                'statusText' => $error->getResponseBody(),
+		if ($error) {
+			return response()->json([
+				'statusText' => $error->getResponseBody(),
             ], $error->getHttpStatusCode());
-          }
+		}
 
-          $user->access_token = $accessToken->getAccessToken();
-          $user->refresh_token = $accessToken->getRefreshToken();
-          $user->save();
+		$user->access_token = $accessToken->getAccessToken();
+		$user->refresh_token = $accessToken->getRefreshToken();
+		$user->save();
 
-          $dataService->updateOAuth2Token($accessToken);
+		$dataService->updateOAuth2Token($accessToken);
 
-          $data = collect();
-          // Iterate through all Accounts, even if it takes multiple pages
-          $i = 1;
-          while (1) {
-            $invoices = $dataService->FindAll('Invoice', $i, 1000);
+		$data = collect();
+		  
+		// Iterate through all Accounts, even if it takes multiple pages
+		$i = 1;
+		while (1) {
+			if($request->filled('customer')){
+				$invoices = $dataService->Query("Select * from Invoice WHERE CustomerRef = '$request->customer'", $i, 1000);
+			}else{
+				$invoices = $dataService->FindAll('Invoice', $i, 1000);
+			}
 
-            $error = $dataService->getLastError();
+			$error = $dataService->getLastError();
 
-            if ($error) {
-                return response()->json([
-                    'statusText' => $error->getResponseBody(),
-                ], $error->getHttpStatusCode());
-            }
+			if ($error) {
+				return response()->json([
+					'statusText' => $error->getResponseBody(),
+				], $error->getHttpStatusCode());
+			}
 
-            if (!$invoices || (0==count($invoices))) {
-                break;
-            }
+			if (!$invoices || (0==count($invoices))) {
+				break;
+			}
 
-            foreach ($invoices as $invoice) {
-                $i++;
-
-                $data->push($invoice);
-            }
-        }
-
+			foreach ($invoices as $invoice) {
+				$i++;
+				$data->push($invoice);
+			}
+		}
+          
         return response()->json([
             'data' => $data
         ], 200);
