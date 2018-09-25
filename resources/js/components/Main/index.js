@@ -1,12 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {fetchAll, fetchSingle} from '../../actions/invoiceActions';
-import { FormGroup, FormControl, ControlLabel, Table } from 'react-bootstrap';
+import {fetchAllInvoices, fetchSingleInvoice} from '../../actions/invoiceActions';
+import {fetchAllCustomers} from '../../actions/customerActions';
+import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import { CenterRow, TooltipDiv, FloatRight } from './styles';
 import Loading from '../Loading';
 
 const mapStateToProps = (state) => ({
+  customer: state.customer,
   invoice: state.invoice,
 });
 
@@ -18,57 +20,65 @@ class Main extends React.Component {
       endDate: moment(),
     };
 
-    this.getSingle = this.getSingle.bind(this);
+    this.getCustomerInvoices = this.getCustomerInvoices.bind(this);
   }
 
-  getAll(){
-    this.props.fetchAll(`/api/invoices`, {
+  getAllCustomers(){
+    this.props.fetchAllCustomers(`/api/customers`, {
       from: this.state.startDate.format("YYYY-MM-DD"),
       to: this.state.endDate.format("YYYY-MM-DD")
     });
   }
 
-  getSingle(event){
-    this.props.fetchSingle(`/api/invoices/${event.target.value}`, {
+  getSingleInvoice(event){
+    this.props.fetchSingleInvoice(`/api/invoices/${event.target.value}`, {
       from: this.state.startDate.format("YYYY-MM-DD"),
       to: this.state.endDate.format("YYYY-MM-DD"),
     });
   }
 
+  getCustomerInvoices(event){
+    this.props.fetchAllInvoices(`/api/invoices`, {
+      customer: event.target.value,
+    });
+  }
+
   componentDidMount() {
-    this.getAll();
+    this.getAllCustomers();
   }
 
   render () {
     return (
     <div className="container">
-        <CenterRow>
-            {this.props.invoice.fetchingAll ? <Loading />
-            : <div>
-                <h1>Invoices</h1>
-                <Table responsive condensed>
-                    <thead>
-                        <tr>
-                            <th>Doc No.</th>
-                            <th>Balance</th>
-                            <th>Transaction Date</th>
-                            <th>Due Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.props.invoice.all && this.props.invoice.all.map((invoice,i) => (
-                        <tr>
-                            <td>{invoice.DocNumber}</td>
-                            <td>{invoice.Balance}</td>
-                            <td>{invoice.TxnDate}</td>
-                            <td>{invoice.DueDate}</td>
-                        </tr>
-                        ))}
-                    </tbody>
-                </Table>
+        <div className="row">
+            {this.props.customer.fetchingAll ? <Loading />
+            : <div className="col-6">
+                <h4>Customers</h4>
+                <ListGroup>
+                  {this.props.customer.all && this.props.customer.all.map((customer,i) => (
+                    <ListGroupItem key={i} value={customer.Id} onClick={this.getCustomerInvoices} className="d-flex justify-content-between align-items-center">
+                      {customer.CompanyName ? customer.CompanyName
+                        : customer.DisplayName ? customer.DisplayName 
+                        : customer.FullyQualifiedName}
+                      {/* <span className="badge badge-primary badge-pill">14</span> */}
+                    </ListGroupItem>
+                  ))}
+                </ListGroup>
             </div>
             }
-        </CenterRow>
+            {this.props.invoice.fetchingAll ? <Loading />
+            : <div className="col-6">
+                <h4>Invoices</h4>
+                <ListGroup>
+                  {this.props.invoice.all && this.props.invoice.all.map((invoice,i) => (
+                    <ListGroupItem key={i} value={invoice.Id} className="d-flex justify-content-between align-items-center">
+                      <p><strong>Invoice No.: </strong>{invoice.Id} <strong>Amount: </strong>{invoice.TotalAmt} <strong>Balance: </strong>{invoice.Balance} <strong>Due: </strong>{invoice.DueDate}</p>
+                    </ListGroupItem>
+                  ))}
+                </ListGroup>
+            </div>
+            }
+        </div>
     </div>
     )
   }
@@ -77,7 +87,8 @@ class Main extends React.Component {
 export default connect(
   mapStateToProps,
   {
-    fetchAll,
-    fetchSingle,
+    fetchAllCustomers,
+    fetchSingleInvoice,
+    fetchAllInvoices,
   }
 )(Main);

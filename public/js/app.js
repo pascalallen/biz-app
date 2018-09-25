@@ -9504,9 +9504,9 @@ module.exports = defaults;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__Label__ = __webpack_require__(461);
 /* unused harmony reexport Label */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__ListGroup__ = __webpack_require__(462);
-/* unused harmony reexport ListGroup */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_29__ListGroup__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__ListGroupItem__ = __webpack_require__(283);
-/* unused harmony reexport ListGroupItem */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_30__ListGroupItem__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__Media__ = __webpack_require__(62);
 /* unused harmony reexport Media */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__MenuItem__ = __webpack_require__(469);
@@ -9558,7 +9558,7 @@ module.exports = defaults;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__ResponsiveEmbed__ = __webpack_require__(516);
 /* unused harmony reexport ResponsiveEmbed */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_56__Row__ = __webpack_require__(517);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_56__Row__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_56__Row__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__SafeAnchor__ = __webpack_require__(18);
 /* unused harmony reexport SafeAnchor */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_58__SplitButton__ = __webpack_require__(518);
@@ -9570,7 +9570,7 @@ module.exports = defaults;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_61__TabContent__ = __webpack_require__(101);
 /* unused harmony reexport TabContent */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_62__Table__ = __webpack_require__(521);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_62__Table__["a"]; });
+/* unused harmony reexport Table */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_63__TabPane__ = __webpack_require__(302);
 /* unused harmony reexport TabPane */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_64__Tabs__ = __webpack_require__(522);
@@ -66009,9 +66009,10 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_moment__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_invoiceActions__ = __webpack_require__(364);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__ = __webpack_require__(83);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__styles__ = __webpack_require__(528);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Loading__ = __webpack_require__(533);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_customerActions__ = __webpack_require__(721);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_bootstrap__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__styles__ = __webpack_require__(528);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Loading__ = __webpack_require__(533);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -66028,8 +66029,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+
 var mapStateToProps = function mapStateToProps(state) {
   return {
+    customer: state.customer,
     invoice: state.invoice
   };
 };
@@ -66047,109 +66050,117 @@ var Main = function (_React$Component) {
       endDate: __WEBPACK_IMPORTED_MODULE_2_moment___default()()
     };
 
-    _this.getSingle = _this.getSingle.bind(_this);
+    _this.getCustomerInvoices = _this.getCustomerInvoices.bind(_this);
     return _this;
   }
 
   _createClass(Main, [{
-    key: 'getAll',
-    value: function getAll() {
-      this.props.fetchAll('/api/invoices', {
+    key: 'getAllCustomers',
+    value: function getAllCustomers() {
+      this.props.fetchAllCustomers('/api/customers', {
         from: this.state.startDate.format("YYYY-MM-DD"),
         to: this.state.endDate.format("YYYY-MM-DD")
       });
     }
   }, {
-    key: 'getSingle',
-    value: function getSingle(event) {
-      this.props.fetchSingle('/api/invoices/' + event.target.value, {
+    key: 'getSingleInvoice',
+    value: function getSingleInvoice(event) {
+      this.props.fetchSingleInvoice('/api/invoices/' + event.target.value, {
         from: this.state.startDate.format("YYYY-MM-DD"),
         to: this.state.endDate.format("YYYY-MM-DD")
+      });
+    }
+  }, {
+    key: 'getCustomerInvoices',
+    value: function getCustomerInvoices(event) {
+      this.props.fetchAllInvoices('/api/invoices', {
+        customer: event.target.value
       });
     }
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.getAll();
+      this.getAllCustomers();
     }
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'container' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_5__styles__["a" /* CenterRow */],
-          null,
-          this.props.invoice.fetchingAll ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Loading__["a" /* default */], null) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'row' },
+          this.props.customer.fetchingAll ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__Loading__["a" /* default */], null) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
-            null,
+            { className: 'col-6' },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'h1',
+              'h4',
+              null,
+              'Customers'
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              __WEBPACK_IMPORTED_MODULE_5_react_bootstrap__["a" /* ListGroup */],
+              null,
+              this.props.customer.all && this.props.customer.all.map(function (customer, i) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                  __WEBPACK_IMPORTED_MODULE_5_react_bootstrap__["b" /* ListGroupItem */],
+                  { key: i, value: customer.Id, onClick: _this2.getCustomerInvoices, className: 'd-flex justify-content-between align-items-center' },
+                  customer.CompanyName ? customer.CompanyName : customer.DisplayName ? customer.DisplayName : customer.FullyQualifiedName
+                );
+              })
+            )
+          ),
+          this.props.invoice.fetchingAll ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__Loading__["a" /* default */], null) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'col-6' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'h4',
               null,
               'Invoices'
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              __WEBPACK_IMPORTED_MODULE_4_react_bootstrap__["b" /* Table */],
-              { responsive: true, condensed: true },
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'thead',
-                null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  'tr',
-                  null,
+              __WEBPACK_IMPORTED_MODULE_5_react_bootstrap__["a" /* ListGroup */],
+              null,
+              this.props.invoice.all && this.props.invoice.all.map(function (invoice, i) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                  __WEBPACK_IMPORTED_MODULE_5_react_bootstrap__["b" /* ListGroupItem */],
+                  { key: i, value: invoice.Id, className: 'd-flex justify-content-between align-items-center' },
                   __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'th',
+                    'p',
                     null,
-                    'Doc No.'
-                  ),
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'th',
-                    null,
-                    'Balance'
-                  ),
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'th',
-                    null,
-                    'Transaction Date'
-                  ),
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'th',
-                    null,
-                    'Due Date'
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                      'strong',
+                      null,
+                      'Invoice No.: '
+                    ),
+                    invoice.Id,
+                    ' ',
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                      'strong',
+                      null,
+                      'Amount: '
+                    ),
+                    invoice.TotalAmt,
+                    ' ',
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                      'strong',
+                      null,
+                      'Balance: '
+                    ),
+                    invoice.Balance,
+                    ' ',
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                      'strong',
+                      null,
+                      'Due: '
+                    ),
+                    invoice.DueDate
                   )
-                )
-              ),
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'tbody',
-                null,
-                this.props.invoice.all && this.props.invoice.all.map(function (invoice, i) {
-                  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'tr',
-                    null,
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                      'td',
-                      null,
-                      invoice.DocNumber
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                      'td',
-                      null,
-                      invoice.Balance
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                      'td',
-                      null,
-                      invoice.TxnDate
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                      'td',
-                      null,
-                      invoice.DueDate
-                    )
-                  );
-                })
-              )
+                );
+              })
             )
           )
         )
@@ -66161,8 +66172,9 @@ var Main = function (_React$Component) {
 }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_redux__["b" /* connect */])(mapStateToProps, {
-  fetchAll: __WEBPACK_IMPORTED_MODULE_3__actions_invoiceActions__["a" /* fetchAll */],
-  fetchSingle: __WEBPACK_IMPORTED_MODULE_3__actions_invoiceActions__["b" /* fetchSingle */]
+  fetchAllCustomers: __WEBPACK_IMPORTED_MODULE_4__actions_customerActions__["a" /* fetchAllCustomers */],
+  fetchSingleInvoice: __WEBPACK_IMPORTED_MODULE_3__actions_invoiceActions__["b" /* fetchSingleInvoice */],
+  fetchAllInvoices: __WEBPACK_IMPORTED_MODULE_3__actions_invoiceActions__["a" /* fetchAllInvoices */]
 })(Main));
 
 /***/ }),
@@ -67719,45 +67731,44 @@ webpackContext.id = 363;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["b"] = fetchSingle;
-/* harmony export (immutable) */ __webpack_exports__["a"] = fetchAll;
+/* harmony export (immutable) */ __webpack_exports__["b"] = fetchSingleInvoice;
+/* harmony export (immutable) */ __webpack_exports__["a"] = fetchAllInvoices;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios_index__ = __webpack_require__(248);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios_index___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios_index__);
 
 
-function fetchSingle(endpoint) {
+function fetchSingleInvoice(endpoint) {
   var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
   return function (dispatch) {
-    dispatch({ type: "FETCH_SINGLE" });
+    dispatch({ type: "FETCH_SINGLE_INVOICE" });
     __WEBPACK_IMPORTED_MODULE_0_axios_index___default.a.get(endpoint, {
       params: params
     }).then(function (response) {
-      console.log(response);
       dispatch({
-        type: "FETCH_SINGLE_FULFILLED",
+        type: "FETCH_SINGLE_INVOICE_FULFILLED",
         payload: response.data
       });
     }).catch(function (err) {
-      dispatch({ type: "FETCH_SINGLE_REJECTED", payload: err });
+      dispatch({ type: "FETCH_SINGLE_INVOICE_REJECTED", payload: err });
     });
   };
 }
 
-function fetchAll(endpoint) {
+function fetchAllInvoices(endpoint) {
   var optionalParams = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
   return function (dispatch) {
-    dispatch({ type: "FETCH_ALL" });
+    dispatch({ type: "FETCH_ALL_INVOICES" });
     __WEBPACK_IMPORTED_MODULE_0_axios_index___default.a.get(endpoint, {
       params: optionalParams
     }).then(function (response) {
       dispatch({
-        type: "FETCH_ALL_FULFILLED",
+        type: "FETCH_ALL_INVOICES_FULFILLED",
         payload: response.data
       });
     }).catch(function (err) {
-      dispatch({ type: "FETCH_ALL_REJECTED", payload: err });
+      dispatch({ type: "FETCH_ALL_INVOICES_REJECTED", payload: err });
     });
   };
 }
@@ -72526,7 +72537,7 @@ function (_React$Component) {
 }(__WEBPACK_IMPORTED_MODULE_4_react___default.a.Component);
 
 ListGroup.propTypes = propTypes;
-/* unused harmony default export */ var _unused_webpack_default_export = (Object(__WEBPACK_IMPORTED_MODULE_7__utils_bootstrapUtils__["a" /* bsClass */])('list-group', ListGroup));
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_7__utils_bootstrapUtils__["a" /* bsClass */])('list-group', ListGroup));
 
 /***/ }),
 /* 463 */
@@ -78278,7 +78289,7 @@ function (_React$Component) {
 
 Table.propTypes = propTypes;
 Table.defaultProps = defaultProps;
-/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_6__utils_bootstrapUtils__["a" /* bsClass */])('table', Table));
+/* unused harmony default export */ var _unused_webpack_default_export = (Object(__WEBPACK_IMPORTED_MODULE_6__utils_bootstrapUtils__["a" /* bsClass */])('table', Table));
 
 /***/ }),
 /* 522 */
@@ -78896,12 +78907,12 @@ function (_React$Component) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CenterRow; });
+/* unused harmony export CenterRow */
 /* unused harmony export TooltipDiv */
 /* unused harmony export FloatRight */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_styled_components__ = __webpack_require__(304);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__ = __webpack_require__(83);
-var _templateObject = _taggedTemplateLiteral(['\n  display: flex;\n  justify-content: center;\n  align-items: center;\n'], ['\n  display: flex;\n  justify-content: center;\n  align-items: center;\n']),
+var _templateObject = _taggedTemplateLiteral(['\n  display: flex;\n  justify-content: center;\n'], ['\n  display: flex;\n  justify-content: center;\n']),
     _templateObject2 = _taggedTemplateLiteral(['\n  background-color: #f8f9fa;\n  padding: 5px;\n  border: 1px solid #ccc;\n  border-radius: 5px;\n  list-style-type: none;\n'], ['\n  background-color: #f8f9fa;\n  padding: 5px;\n  border: 1px solid #ccc;\n  border-radius: 5px;\n  list-style-type: none;\n']),
     _templateObject3 = _taggedTemplateLiteral(['\n  float: right;\n  font-weight: bold;\n  color: #28a745;\n'], ['\n  float: right;\n  font-weight: bold;\n  color: #28a745;\n']);
 
@@ -78910,7 +78921,7 @@ function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defi
 
 
 
-var CenterRow = Object(__WEBPACK_IMPORTED_MODULE_0_styled_components__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["a" /* Row */])(_templateObject);
+var CenterRow = Object(__WEBPACK_IMPORTED_MODULE_0_styled_components__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["c" /* Row */])(_templateObject);
 
 var TooltipDiv = __WEBPACK_IMPORTED_MODULE_0_styled_components__["a" /* default */].div(_templateObject2);
 
@@ -80830,7 +80841,7 @@ function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defi
 
 
 
-var CenterRow = Object(__WEBPACK_IMPORTED_MODULE_0_styled_components__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["a" /* Row */])(_templateObject);
+var CenterRow = Object(__WEBPACK_IMPORTED_MODULE_0_styled_components__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["c" /* Row */])(_templateObject);
 
 /***/ }),
 /* 535 */
@@ -89770,15 +89781,15 @@ function reducer() {
 
   switch (action.type) {
 
-    case "FETCH_ALL":
+    case "FETCH_ALL_ACCOUNTS":
       {
         return _extends({}, state, { fetchingAll: true });
       }
-    case "FETCH_ALL_REJECTED":
+    case "FETCH_ALL_ACCOUNTS_REJECTED":
       {
         return _extends({}, state, { fetchingAll: false, error: action.payload });
       }
-    case "FETCH_ALL_FULFILLED":
+    case "FETCH_ALL_ACCOUNTS_FULFILLED":
       {
         return _extends({}, state, {
           fetchingAll: false,
@@ -89787,15 +89798,15 @@ function reducer() {
         });
       }
 
-    case "FETCH_SINGLE":
+    case "FETCH_SINGLE_ACCOUNT":
       {
         return _extends({}, state, { fetchingSingle: true });
       }
-    case "FETCH_SINGLE_REJECTED":
+    case "FETCH_SINGLE_ACCOUNT_REJECTED":
       {
         return _extends({}, state, { fetchingSingle: false, error: action.payload });
       }
-    case "FETCH_SINGLE_FULFILLED":
+    case "FETCH_SINGLE_ACCOUNT_FULFILLED":
       {
         return _extends({}, state, {
           fetchingSingle: false,
@@ -89832,15 +89843,15 @@ function reducer() {
 
   switch (action.type) {
 
-    case "FETCH_ALL":
+    case "FETCH_ALL_CUSTOMERS":
       {
         return _extends({}, state, { fetchingAll: true });
       }
-    case "FETCH_ALL_REJECTED":
+    case "FETCH_ALL_CUSTOMERS_REJECTED":
       {
         return _extends({}, state, { fetchingAll: false, error: action.payload });
       }
-    case "FETCH_ALL_FULFILLED":
+    case "FETCH_ALL_CUSTOMERS_FULFILLED":
       {
         return _extends({}, state, {
           fetchingAll: false,
@@ -89849,15 +89860,15 @@ function reducer() {
         });
       }
 
-    case "FETCH_SINGLE":
+    case "FETCH_SINGLE_CUSTOMER":
       {
         return _extends({}, state, { fetchingSingle: true });
       }
-    case "FETCH_SINGLE_REJECTED":
+    case "FETCH_SINGLE_CUSTOMER_REJECTED":
       {
         return _extends({}, state, { fetchingSingle: false, error: action.payload });
       }
-    case "FETCH_SINGLE_FULFILLED":
+    case "FETCH_SINGLE_CUSTOMER_FULFILLED":
       {
         return _extends({}, state, {
           fetchingSingle: false,
@@ -89894,15 +89905,15 @@ function reducer() {
 
   switch (action.type) {
 
-    case "FETCH_ALL":
+    case "FETCH_ALL_INVOICES":
       {
         return _extends({}, state, { fetchingAll: true });
       }
-    case "FETCH_ALL_REJECTED":
+    case "FETCH_ALL_INVOICES_REJECTED":
       {
         return _extends({}, state, { fetchingAll: false, error: action.payload });
       }
-    case "FETCH_ALL_FULFILLED":
+    case "FETCH_ALL_INVOICES_FULFILLED":
       {
         return _extends({}, state, {
           fetchingAll: false,
@@ -89911,15 +89922,15 @@ function reducer() {
         });
       }
 
-    case "FETCH_SINGLE":
+    case "FETCH_SINGLE_INVOICE":
       {
         return _extends({}, state, { fetchingSingle: true });
       }
-    case "FETCH_SINGLE_REJECTED":
+    case "FETCH_SINGLE_INVOICE_REJECTED":
       {
         return _extends({}, state, { fetchingSingle: false, error: action.payload });
       }
-    case "FETCH_SINGLE_FULFILLED":
+    case "FETCH_SINGLE_INVOICE_FULFILLED":
       {
         return _extends({}, state, {
           fetchingSingle: false,
@@ -111062,6 +111073,57 @@ if (token) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 717 */,
+/* 718 */,
+/* 719 */,
+/* 720 */,
+/* 721 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export fetchSingleCustomer */
+/* harmony export (immutable) */ __webpack_exports__["a"] = fetchAllCustomers;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios_index__ = __webpack_require__(248);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios_index___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios_index__);
+
+
+function fetchSingleCustomer(endpoint) {
+  var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  return function (dispatch) {
+    dispatch({ type: "FETCH_SINGLE_CUSTOMER" });
+    __WEBPACK_IMPORTED_MODULE_0_axios_index___default.a.get(endpoint, {
+      params: params
+    }).then(function (response) {
+      dispatch({
+        type: "FETCH_SINGLE_CUSTOMER_FULFILLED",
+        payload: response.data
+      });
+    }).catch(function (err) {
+      dispatch({ type: "FETCH_SINGLE_CUSTOMER_REJECTED", payload: err });
+    });
+  };
+}
+
+function fetchAllCustomers(endpoint) {
+  var optionalParams = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  return function (dispatch) {
+    dispatch({ type: "FETCH_ALL_CUSTOMERS" });
+    __WEBPACK_IMPORTED_MODULE_0_axios_index___default.a.get(endpoint, {
+      params: optionalParams
+    }).then(function (response) {
+      dispatch({
+        type: "FETCH_ALL_CUSTOMERS_FULFILLED",
+        payload: response.data
+      });
+    }).catch(function (err) {
+      dispatch({ type: "FETCH_ALL_CUSTOMERS_REJECTED", payload: err });
+    });
+  };
+}
 
 /***/ })
 /******/ ]);

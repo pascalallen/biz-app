@@ -1,37 +1,37 @@
 import axios from "axios/index";
 
-export function fetchSingle(endpoint, params = {}){
+export function fetchSingleAccount(endpoint, params = {}){
   return function(dispatch) {
-    dispatch({type: "FETCH_SINGLE"});
+    dispatch({type: "FETCH_SINGLE_ACCOUNT"});
     axios.get(endpoint, {
       params: params
     })
     .then((response) => {
       dispatch({
-        type: "FETCH_SINGLE_FULFILLED",
+        type: "FETCH_SINGLE_ACCOUNT_FULFILLED",
         payload: response.data
       })
     })
     .catch((err) => {
-      dispatch({type: "FETCH_SINGLE_REJECTED", payload: err})
+      dispatch({type: "FETCH_SINGLE_ACCOUNT_REJECTED", payload: err})
     })
   }
 }
 
-export function fetchAll(endpoint, optionalParams = {}) {
+export function fetchAllAccounts(endpoint, optionalParams = {}) {
   return function(dispatch) {
-    dispatch({type: "FETCH_ALL"});
+    dispatch({type: "FETCH_ALL_ACCOUNTS"});
     axios.get(endpoint, {
       params: optionalParams
     })
     .then((response) => {
       dispatch({
-        type: "FETCH_ALL_FULFILLED",
+        type: "FETCH_ALL_ACCOUNTS_FULFILLED",
         payload: response.data
       })
     })
     .catch((err) => {
-      dispatch({type: "FETCH_ALL_REJECTED", payload: err})
+      dispatch({type: "FETCH_ALL_ACCOUNTS_REJECTED", payload: err})
     })
   }
 }
