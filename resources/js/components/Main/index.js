@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import {fetchAllInvoices, fetchSingleInvoice} from '../../actions/invoiceActions';
 import {fetchAllCustomers} from '../../actions/customerActions';
-import {fetchAuthUser} from '../../actions/authActions';
+import {fetchAuth} from '../../actions/authActions';
 import { ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 import { CenterRow, TooltipDiv, FloatRight } from './styles';
 import Loading from '../Loading';
@@ -11,7 +11,7 @@ import Loading from '../Loading';
 const mapStateToProps = (state) => ({
   customer: state.customer,
   invoice: state.invoice,
-  authUser: state.authUser,
+  auth: state.auth,
 });
 
 class Main extends React.Component {
@@ -47,13 +47,13 @@ class Main extends React.Component {
 
   componentDidMount() {
     this.getAllCustomers();
-    this.props.fetchAuthUser(`/api/user`);
+    this.props.fetchAuth(`/api/user`);
   }
 
   render () {
     return (
     <div className="container">
-        {/* {this.props.authUser ? */}
+        {this.props.auth.user.refresh_token ?
             <div className="row">
                 {this.props.customer.fetchingAll ? <Loading />
                 : <div className="col-6">
@@ -83,7 +83,7 @@ class Main extends React.Component {
                 </div>
                 }
             </div>
-        {/* : <Button bsStyle="link" href="connect-quickbooks">Connect Quickbooks</Button>} */}
+        : <Button bsStyle="link" href="connect-quickbooks">Connect Quickbooks</Button>}
     </div>
     )
   }
@@ -95,6 +95,6 @@ export default connect(
     fetchAllCustomers,
     fetchSingleInvoice,
     fetchAllInvoices,
-    fetchAuthUser,
+    fetchAuth,
   }
 )(Main);
