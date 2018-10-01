@@ -16,10 +16,14 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/connect-quickbooks', 'QuickbooksController@connect');
+Route::get('/disconnect-quickbooks', 'QuickbooksController@disconnect');
 
 Route::group(['prefix' => 'api', 'middleware' => 'auth'], function() {
     Route::resource('accounts', 'API\AccountController');
     Route::resource('invoices', 'API\InvoiceController');
     Route::resource('customers', 'API\CustomerController');
+    Route::get('user', function(){
+        return Auth::user();
+    });
     // Route::resource('companies', 'API\CompanyController');
 });

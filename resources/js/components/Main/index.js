@@ -3,13 +3,15 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import {fetchAllInvoices, fetchSingleInvoice} from '../../actions/invoiceActions';
 import {fetchAllCustomers} from '../../actions/customerActions';
-import { ListGroup, ListGroupItem } from 'react-bootstrap';
+import {fetchAuthUser} from '../../actions/authActions';
+import { ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 import { CenterRow, TooltipDiv, FloatRight } from './styles';
 import Loading from '../Loading';
 
 const mapStateToProps = (state) => ({
   customer: state.customer,
   invoice: state.invoice,
+  authUser: state.authUser,
 });
 
 class Main extends React.Component {
@@ -45,40 +47,43 @@ class Main extends React.Component {
 
   componentDidMount() {
     this.getAllCustomers();
+    this.props.fetchAuthUser(`/api/user`);
   }
 
   render () {
     return (
     <div className="container">
-        <div className="row">
-            {this.props.customer.fetchingAll ? <Loading />
-            : <div className="col-6">
-                <h4>Customers</h4>
-                <ListGroup>
-                  {this.props.customer.all && this.props.customer.all.map((customer,i) => (
-                    <ListGroupItem key={i} value={customer.Id} onClick={this.getCustomerInvoices} className="d-flex justify-content-between align-items-center">
-                      {customer.CompanyName ? customer.CompanyName
-                        : customer.DisplayName ? customer.DisplayName 
-                        : customer.FullyQualifiedName}
-                      {/* <span className="badge badge-primary badge-pill">14</span> */}
-                    </ListGroupItem>
-                  ))}
-                </ListGroup>
+        {/* {this.props.authUser ? */}
+            <div className="row">
+                {this.props.customer.fetchingAll ? <Loading />
+                : <div className="col-6">
+                    <h4>Customers</h4>
+                    <ListGroup>
+                    {this.props.customer.all && this.props.customer.all.map((customer,i) => (
+                        <ListGroupItem key={i} value={customer.Id} onClick={this.getCustomerInvoices} className="d-flex justify-content-between align-items-center">
+                        {customer.CompanyName ? customer.CompanyName
+                            : customer.DisplayName ? customer.DisplayName
+                            : customer.FullyQualifiedName}
+                        {/* <span className="badge badge-primary badge-pill">14</span> */}
+                        </ListGroupItem>
+                    ))}
+                    </ListGroup>
+                </div>
+                }
+                {this.props.invoice.fetchingAll ? <Loading />
+                : <div className="col-6">
+                    <h4>Invoices</h4>
+                    <ListGroup>
+                    {this.props.invoice.all && this.props.invoice.all.map((invoice,i) => (
+                        <ListGroupItem key={i} value={invoice.Id} className="d-flex justify-content-between align-items-center">
+                        <p><strong>Invoice No.: </strong>{invoice.Id} <strong>Amount: </strong>{invoice.TotalAmt} <strong>Balance: </strong>{invoice.Balance} <strong>Due: </strong>{invoice.DueDate}</p>
+                        </ListGroupItem>
+                    ))}
+                    </ListGroup>
+                </div>
+                }
             </div>
-            }
-            {this.props.invoice.fetchingAll ? <Loading />
-            : <div className="col-6">
-                <h4>Invoices</h4>
-                <ListGroup>
-                  {this.props.invoice.all && this.props.invoice.all.map((invoice,i) => (
-                    <ListGroupItem key={i} value={invoice.Id} className="d-flex justify-content-between align-items-center">
-                      <p><strong>Invoice No.: </strong>{invoice.Id} <strong>Amount: </strong>{invoice.TotalAmt} <strong>Balance: </strong>{invoice.Balance} <strong>Due: </strong>{invoice.DueDate}</p>
-                    </ListGroupItem>
-                  ))}
-                </ListGroup>
-            </div>
-            }
-        </div>
+        {/* : <Button bsStyle="link" href="connect-quickbooks">Connect Quickbooks</Button>} */}
     </div>
     )
   }
@@ -90,5 +95,6 @@ export default connect(
     fetchAllCustomers,
     fetchSingleInvoice,
     fetchAllInvoices,
+    fetchAuthUser,
   }
 )(Main);
