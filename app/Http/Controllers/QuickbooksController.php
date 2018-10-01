@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use QuickBooksOnline\API\DataService\DataService;
+use QuickBooksOnline\API\PlatformService\PlatformService;
+use QuickBooksOnline\API\Core\ServiceContext;
+use Auth;
 
 class QuickbooksController extends Controller
 {
@@ -21,5 +24,12 @@ class QuickbooksController extends Controller
         $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
         $authorizationUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
         header("Location: ".$authorizationUrl); // Quickbooks docs say to use `header()` to redirect
+    }
+
+    public function disconnect()
+    {
+        $user = Auth::user();
+
+        
     }
 }

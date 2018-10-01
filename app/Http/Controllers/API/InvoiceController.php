@@ -11,7 +11,7 @@ class InvoiceController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
@@ -53,7 +53,7 @@ class InvoiceController extends Controller
 		$dataService->updateOAuth2Token($accessToken);
 
 		$data = collect();
-		  
+
 		// Iterate through all Accounts, even if it takes multiple pages
 		$i = 1;
 		while (1) {
@@ -80,7 +80,7 @@ class InvoiceController extends Controller
 				$data->push($invoice);
 			}
 		}
-          
+
         return response()->json([
             'data' => $data
         ], 200);
