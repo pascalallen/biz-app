@@ -37,7 +37,7 @@ class FileController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->file);
+        dd($request->files);
         if($request->filled(['name','description','filename','invoice_key','customer_key'])){
 
             if(!Storage::disk('s3')->exists($request->filename)){

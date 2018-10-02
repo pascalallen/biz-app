@@ -66035,225 +66035,236 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var mapStateToProps = function mapStateToProps(state) {
-  return {
-    customer: state.customer,
-    invoice: state.invoice,
-    auth: state.auth,
-    file: state.file
-  };
+    return {
+        customer: state.customer,
+        invoice: state.invoice,
+        auth: state.auth,
+        file: state.file
+    };
 };
 
 var Main = function (_React$Component) {
-  _inherits(Main, _React$Component);
+    _inherits(Main, _React$Component);
 
-  function Main(props) {
-    _classCallCheck(this, Main);
+    function Main(props) {
+        _classCallCheck(this, Main);
 
-    var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
 
-    _this.state = {
-      startDate: __WEBPACK_IMPORTED_MODULE_2_moment___default()().subtract(1, 'days'),
-      endDate: __WEBPACK_IMPORTED_MODULE_2_moment___default()(),
-      accepted: [],
-      rejected: []
-    };
+        _this.state = {
+            startDate: __WEBPACK_IMPORTED_MODULE_2_moment___default()().subtract(1, 'days'),
+            endDate: __WEBPACK_IMPORTED_MODULE_2_moment___default()(),
+            accepted: [],
+            rejected: []
+        };
 
-    _this.getCustomerInvoices = _this.getCustomerInvoices.bind(_this);
-    return _this;
-  }
-
-  _createClass(Main, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.getAllCustomers();
-      this.props.fetchAuth('/api/user');
+        _this.getCustomerInvoices = _this.getCustomerInvoices.bind(_this);
+        return _this;
     }
-  }, {
-    key: 'getAllCustomers',
-    value: function getAllCustomers() {
-      this.props.fetchAllCustomers('/api/customers', {
-        from: this.state.startDate.format("YYYY-MM-DD"),
-        to: this.state.endDate.format("YYYY-MM-DD")
-      });
-    }
-  }, {
-    key: 'getSingleInvoice',
-    value: function getSingleInvoice(event) {
-      this.props.fetchSingleInvoice('/api/invoices/' + event.target.value, {
-        from: this.state.startDate.format("YYYY-MM-DD"),
-        to: this.state.endDate.format("YYYY-MM-DD")
-      });
-    }
-  }, {
-    key: 'getCustomerInvoices',
-    value: function getCustomerInvoices(event) {
-      this.props.fetchAllInvoices('/api/invoices', {
-        customer: event.target.value
-      });
-    }
-  }, {
-    key: 'uploadFiles',
-    value: function uploadFiles(accepted, rejected) {
-      this.setState({ accepted: accepted, rejected: rejected });
-      // accepted.map((file,i) => {
-      this.props.uploadFile('/api/files', {
-        files: accepted
-        // name:
-        // description:
-        // filename:
-        // invoice_key:
-        // customer_key:
-      });
 
-      // lastModifiedDate: Fri Jan 29 2016 12:49:00 GMT-0600 (Central Standard Time) {}
-      // name: "hampton1-16_0030.jpg"
-      // preview: "blob:http://matt-pascal.test/756141ff-6399-4dec-99d7-66f00230f1a4"
-      // size: 2179049
-      // type: "image/jpeg"
-      // webkitRelativePath: ""
-      // });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
+    _createClass(Main, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.getAllCustomers();
+            this.props.fetchAuth('/api/user');
+        }
+    }, {
+        key: 'getAllCustomers',
+        value: function getAllCustomers() {
+            this.props.fetchAllCustomers('/api/customers', {
+                from: this.state.startDate.format("YYYY-MM-DD"),
+                to: this.state.endDate.format("YYYY-MM-DD")
+            });
+        }
+    }, {
+        key: 'getSingleInvoice',
+        value: function getSingleInvoice(event) {
+            this.props.fetchSingleInvoice('/api/invoices/' + event.target.value, {
+                from: this.state.startDate.format("YYYY-MM-DD"),
+                to: this.state.endDate.format("YYYY-MM-DD")
+            });
+        }
+    }, {
+        key: 'getCustomerInvoices',
+        value: function getCustomerInvoices(event) {
+            this.props.fetchAllInvoices('/api/invoices', {
+                customer: event.target.value
+            });
+        }
 
-      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        { className: 'container' },
-        this.props.auth.user.refresh_token ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'div',
-          { className: 'row' },
-          this.props.customer.fetchingAll ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__Loading__["a" /* default */], null) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'div',
-            { className: 'col-6' },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'h4',
-              null,
-              'Customers'
-            ),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__["b" /* ListGroup */],
-              null,
-              this.props.customer.all && this.props.customer.all.map(function (customer, i) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__["c" /* ListGroupItem */],
-                  { key: i, value: customer.Id, onClick: _this2.getCustomerInvoices, className: 'd-flex justify-content-between align-items-center' },
-                  customer.CompanyName ? customer.CompanyName : customer.DisplayName ? customer.DisplayName : customer.FullyQualifiedName
-                );
-              })
-            )
-          ),
-          this.props.invoice.fetchingAll ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__Loading__["a" /* default */], null) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'div',
-            { className: 'col-6' },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'h4',
-              null,
-              'Invoices'
-            ),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__["b" /* ListGroup */],
-              null,
-              this.props.invoice.all && this.props.invoice.all.map(function (invoice, i) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__["c" /* ListGroupItem */],
-                  { key: i, value: invoice.Id, className: 'd-flex justify-content-between align-items-center' },
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        //   uploadFiles(accepted, rejected){
+        //     this.setState({ accepted, rejected });
+        //     // accepted.map((file,i) => {
+        //         this.props.uploadFile(`/api/files`, {
+        //             files: accepted,
+        //             // name:
+        //             // description:
+        //             // filename:
+        //             // invoice_key:
+        //             // customer_key:
+        //         });
+
+        //         // lastModifiedDate: Fri Jan 29 2016 12:49:00 GMT-0600 (Central Standard Time) {}
+        //         // name: "hampton1-16_0030.jpg"
+        //         // preview: "blob:http://matt-pascal.test/756141ff-6399-4dec-99d7-66f00230f1a4"
+        //         // size: 2179049
+        //         // type: "image/jpeg"
+        //         // webkitRelativePath: ""
+        //     // });
+        //   }
+
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'container' },
+                this.props.auth.user.refresh_token ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
-                    { className: 'col-8' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                      'ul',
-                      { className: 'list-group list-group-flush' },
-                      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'li',
-                        { className: 'list-group-item' },
+                    { className: 'row' },
+                    this.props.customer.fetchingAll ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__Loading__["a" /* default */], null) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-6' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                          'strong',
-                          null,
-                          'Invoice No.: '
+                            'h4',
+                            null,
+                            'Customers'
                         ),
-                        invoice.Id
-                      ),
-                      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'li',
-                        { className: 'list-group-item' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                          'strong',
-                          null,
-                          'Amount: '
-                        ),
-                        invoice.TotalAmt
-                      ),
-                      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'li',
-                        { className: 'list-group-item' },
+                            __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__["b" /* ListGroup */],
+                            null,
+                            this.props.customer.all && this.props.customer.all.map(function (customer, i) {
+                                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__["c" /* ListGroupItem */],
+                                    { key: i, value: customer.Id, onClick: _this2.getCustomerInvoices, className: 'd-flex justify-content-between align-items-center' },
+                                    customer.CompanyName ? customer.CompanyName : customer.DisplayName ? customer.DisplayName : customer.FullyQualifiedName
+                                );
+                            })
+                        )
+                    ),
+                    this.props.invoice.fetchingAll ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__Loading__["a" /* default */], null) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-6' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                          'strong',
-                          null,
-                          'Balance: '
+                            'h4',
+                            null,
+                            'Invoices'
                         ),
-                        invoice.Balance
-                      ),
-                      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'li',
-                        { className: 'list-group-item' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                          'strong',
-                          null,
-                          'Due: '
-                        ),
-                        invoice.DueDate
-                      )
+                            __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__["b" /* ListGroup */],
+                            null,
+                            this.props.invoice.all && this.props.invoice.all.map(function (invoice, i) {
+                                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__["c" /* ListGroupItem */],
+                                    { key: i, value: invoice.Id, className: 'd-flex justify-content-between align-items-center' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'col-8' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'ul',
+                                            { className: 'list-group list-group-flush' },
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                'li',
+                                                { className: 'list-group-item' },
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    'strong',
+                                                    null,
+                                                    'Invoice No.: '
+                                                ),
+                                                invoice.Id
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                'li',
+                                                { className: 'list-group-item' },
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    'strong',
+                                                    null,
+                                                    'Amount: '
+                                                ),
+                                                invoice.TotalAmt
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                'li',
+                                                { className: 'list-group-item' },
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    'strong',
+                                                    null,
+                                                    'Balance: '
+                                                ),
+                                                invoice.Balance
+                                            ),
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                'li',
+                                                { className: 'list-group-item' },
+                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                    'strong',
+                                                    null,
+                                                    'Due: '
+                                                ),
+                                                invoice.DueDate
+                                            )
+                                        )
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'col-2' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'span',
+                                            { className: 'badge badge-primary badge-pill' },
+                                            '14'
+                                        )
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'col-2' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            __WEBPACK_IMPORTED_MODULE_8__styles__["a" /* StyledDropzone */],
+                                            {
+                                                accept: 'image/*',
+                                                onDrop: function onDrop(accepted, rejected) {
+                                                    accepted.map(function (file, i) {
+                                                        _this2.props.uploadFile('/api/files', {
+                                                            file: file
+                                                            // name:
+                                                            // description:
+                                                            // filename:
+                                                            // invoice_key:
+                                                            // customer_key:
+                                                        });
+                                                    });
+                                                }
+                                            },
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                'h3',
+                                                null,
+                                                '+'
+                                            )
+                                        )
+                                    )
+                                );
+                            })
+                        )
                     )
-                  ),
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'col-2' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                      'span',
-                      { className: 'badge badge-primary badge-pill' },
-                      '14'
-                    )
-                  ),
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'col-2' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                      __WEBPACK_IMPORTED_MODULE_8__styles__["a" /* StyledDropzone */],
-                      {
-                        accept: 'image/*',
-                        onDrop: _this2.uploadFiles
-                      },
-                      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'h3',
-                        null,
-                        '+'
-                      )
-                    )
-                  )
-                );
-              })
-            )
-          )
-        ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__["a" /* Button */],
-          { bsStyle: 'link', href: 'connect-quickbooks' },
-          'Connect Quickbooks'
-        )
-      );
-    }
-  }]);
+                ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__["a" /* Button */],
+                    { bsStyle: 'link', href: 'connect-quickbooks' },
+                    'Connect Quickbooks'
+                )
+            );
+        }
+    }]);
 
-  return Main;
+    return Main;
 }(__WEBPACK_IMPORTED_MODULE_0_react___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_1_react_redux__["b" /* connect */])(mapStateToProps, {
-  fetchAllCustomers: __WEBPACK_IMPORTED_MODULE_4__actions_customerActions__["a" /* fetchAllCustomers */],
-  fetchSingleInvoice: __WEBPACK_IMPORTED_MODULE_3__actions_invoiceActions__["b" /* fetchSingleInvoice */],
-  fetchAllInvoices: __WEBPACK_IMPORTED_MODULE_3__actions_invoiceActions__["a" /* fetchAllInvoices */],
-  fetchAuth: __WEBPACK_IMPORTED_MODULE_5__actions_authActions__["a" /* fetchAuth */],
-  uploadFile: __WEBPACK_IMPORTED_MODULE_6__actions_fileActions__["a" /* uploadFile */]
+    fetchAllCustomers: __WEBPACK_IMPORTED_MODULE_4__actions_customerActions__["a" /* fetchAllCustomers */],
+    fetchSingleInvoice: __WEBPACK_IMPORTED_MODULE_3__actions_invoiceActions__["b" /* fetchSingleInvoice */],
+    fetchAllInvoices: __WEBPACK_IMPORTED_MODULE_3__actions_invoiceActions__["a" /* fetchAllInvoices */],
+    fetchAuth: __WEBPACK_IMPORTED_MODULE_5__actions_authActions__["a" /* fetchAuth */],
+    uploadFile: __WEBPACK_IMPORTED_MODULE_6__actions_fileActions__["a" /* uploadFile */]
 })(Main));
 
 /***/ }),
