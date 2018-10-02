@@ -4,6 +4,7 @@ import moment from 'moment';
 import {fetchAllInvoices, fetchSingleInvoice} from '../../actions/invoiceActions';
 import {fetchAllCustomers} from '../../actions/customerActions';
 import {fetchAuth} from '../../actions/authActions';
+import {uploadFile} from '../../actions/fileActions';
 import { ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 import { CenterRow, TooltipDiv, FloatRight, StyledDropzone } from './styles';
 import Loading from '../Loading';
@@ -12,6 +13,7 @@ const mapStateToProps = (state) => ({
   customer: state.customer,
   invoice: state.invoice,
   auth: state.auth,
+  file: state.file,
 });
 
 class Main extends React.Component {
@@ -54,6 +56,23 @@ class Main extends React.Component {
 
   uploadFiles(accepted, rejected){
     this.setState({ accepted, rejected });
+    // accepted.map((file,i) => {
+        this.props.uploadFile(`/api/files`, {
+            files: accepted,
+            // name:
+            // description:
+            // filename:
+            // invoice_key:
+            // customer_key:
+        });
+
+        // lastModifiedDate: Fri Jan 29 2016 12:49:00 GMT-0600 (Central Standard Time) {}
+        // name: "hampton1-16_0030.jpg"
+        // preview: "blob:http://matt-pascal.test/756141ff-6399-4dec-99d7-66f00230f1a4"
+        // size: 2179049
+        // type: "image/jpeg"
+        // webkitRelativePath: ""
+    // });
   }
 
   render () {
@@ -119,5 +138,6 @@ export default connect(
     fetchSingleInvoice,
     fetchAllInvoices,
     fetchAuth,
+    uploadFile,
   }
 )(Main);

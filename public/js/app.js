@@ -66011,9 +66011,10 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__actions_invoiceActions__ = __webpack_require__(364);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions_customerActions__ = __webpack_require__(383);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__actions_authActions__ = __webpack_require__(384);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_bootstrap__ = __webpack_require__(84);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__styles__ = __webpack_require__(530);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Loading__ = __webpack_require__(535);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__actions_fileActions__ = __webpack_require__(729);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__styles__ = __webpack_require__(530);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__Loading__ = __webpack_require__(535);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -66032,11 +66033,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+
 var mapStateToProps = function mapStateToProps(state) {
   return {
     customer: state.customer,
     invoice: state.invoice,
-    auth: state.auth
+    auth: state.auth,
+    file: state.file
   };
 };
 
@@ -66092,6 +66095,23 @@ var Main = function (_React$Component) {
     key: 'uploadFiles',
     value: function uploadFiles(accepted, rejected) {
       this.setState({ accepted: accepted, rejected: rejected });
+      // accepted.map((file,i) => {
+      this.props.uploadFile('/api/files', {
+        files: accepted
+        // name:
+        // description:
+        // filename:
+        // invoice_key:
+        // customer_key:
+      });
+
+      // lastModifiedDate: Fri Jan 29 2016 12:49:00 GMT-0600 (Central Standard Time) {}
+      // name: "hampton1-16_0030.jpg"
+      // preview: "blob:http://matt-pascal.test/756141ff-6399-4dec-99d7-66f00230f1a4"
+      // size: 2179049
+      // type: "image/jpeg"
+      // webkitRelativePath: ""
+      // });
     }
   }, {
     key: 'render',
@@ -66104,7 +66124,7 @@ var Main = function (_React$Component) {
         this.props.auth.user.refresh_token ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
           { className: 'row' },
-          this.props.customer.fetchingAll ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__Loading__["a" /* default */], null) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          this.props.customer.fetchingAll ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__Loading__["a" /* default */], null) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
             { className: 'col-6' },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -66113,18 +66133,18 @@ var Main = function (_React$Component) {
               'Customers'
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              __WEBPACK_IMPORTED_MODULE_6_react_bootstrap__["b" /* ListGroup */],
+              __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__["b" /* ListGroup */],
               null,
               this.props.customer.all && this.props.customer.all.map(function (customer, i) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  __WEBPACK_IMPORTED_MODULE_6_react_bootstrap__["c" /* ListGroupItem */],
+                  __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__["c" /* ListGroupItem */],
                   { key: i, value: customer.Id, onClick: _this2.getCustomerInvoices, className: 'd-flex justify-content-between align-items-center' },
                   customer.CompanyName ? customer.CompanyName : customer.DisplayName ? customer.DisplayName : customer.FullyQualifiedName
                 );
               })
             )
           ),
-          this.props.invoice.fetchingAll ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__Loading__["a" /* default */], null) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          this.props.invoice.fetchingAll ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__Loading__["a" /* default */], null) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
             { className: 'col-6' },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -66133,11 +66153,11 @@ var Main = function (_React$Component) {
               'Invoices'
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              __WEBPACK_IMPORTED_MODULE_6_react_bootstrap__["b" /* ListGroup */],
+              __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__["b" /* ListGroup */],
               null,
               this.props.invoice.all && this.props.invoice.all.map(function (invoice, i) {
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  __WEBPACK_IMPORTED_MODULE_6_react_bootstrap__["c" /* ListGroupItem */],
+                  __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__["c" /* ListGroupItem */],
                   { key: i, value: invoice.Id, className: 'd-flex justify-content-between align-items-center' },
                   __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
@@ -66200,7 +66220,7 @@ var Main = function (_React$Component) {
                     'div',
                     { className: 'col-2' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                      __WEBPACK_IMPORTED_MODULE_7__styles__["a" /* StyledDropzone */],
+                      __WEBPACK_IMPORTED_MODULE_8__styles__["a" /* StyledDropzone */],
                       {
                         accept: 'image/*',
                         onDrop: _this2.uploadFiles
@@ -66217,7 +66237,7 @@ var Main = function (_React$Component) {
             )
           )
         ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_6_react_bootstrap__["a" /* Button */],
+          __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__["a" /* Button */],
           { bsStyle: 'link', href: 'connect-quickbooks' },
           'Connect Quickbooks'
         )
@@ -66232,7 +66252,8 @@ var Main = function (_React$Component) {
   fetchAllCustomers: __WEBPACK_IMPORTED_MODULE_4__actions_customerActions__["a" /* fetchAllCustomers */],
   fetchSingleInvoice: __WEBPACK_IMPORTED_MODULE_3__actions_invoiceActions__["b" /* fetchSingleInvoice */],
   fetchAllInvoices: __WEBPACK_IMPORTED_MODULE_3__actions_invoiceActions__["a" /* fetchAllInvoices */],
-  fetchAuth: __WEBPACK_IMPORTED_MODULE_5__actions_authActions__["a" /* fetchAuth */]
+  fetchAuth: __WEBPACK_IMPORTED_MODULE_5__actions_authActions__["a" /* fetchAuth */],
+  uploadFile: __WEBPACK_IMPORTED_MODULE_6__actions_fileActions__["a" /* uploadFile */]
 })(Main));
 
 /***/ }),
@@ -81284,6 +81305,8 @@ function isPromise(value) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__customerReducer__ = __webpack_require__(713);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__invoiceReducer__ = __webpack_require__(714);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__authReducer__ = __webpack_require__(715);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__fileReducer__ = __webpack_require__(728);
+
 
 
 
@@ -81296,7 +81319,8 @@ function isPromise(value) {
     account: __WEBPACK_IMPORTED_MODULE_2__accountReducer__["a" /* default */],
     customer: __WEBPACK_IMPORTED_MODULE_3__customerReducer__["a" /* default */],
     invoice: __WEBPACK_IMPORTED_MODULE_4__invoiceReducer__["a" /* default */],
-    auth: __WEBPACK_IMPORTED_MODULE_5__authReducer__["a" /* default */]
+    auth: __WEBPACK_IMPORTED_MODULE_5__authReducer__["a" /* default */],
+    file: __WEBPACK_IMPORTED_MODULE_6__fileReducer__["a" /* default */]
 }));
 
 /***/ }),
@@ -112080,6 +112104,76 @@ module.exports=function(t){function n(e){if(r[e])return r[e].exports;var o=r[e]=
     borderRadius: 5
   }
 });
+
+/***/ }),
+/* 728 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = reducer;
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function reducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+    file: [],
+    uploadedFile: false,
+    error: null,
+    uploadingFile: false
+  };
+  var action = arguments[1];
+
+
+  switch (action.type) {
+
+    case "UPLOAD_FILE":
+      {
+        return _extends({}, state, { uploadingFile: true });
+      }
+    case "UPLOAD_FILE_REJECTED":
+      {
+        return _extends({}, state, { uploadingFile: false, error: action.payload });
+      }
+    case "UPLOAD_FILE_FULFILLED":
+      {
+        return _extends({}, state, {
+          uploadingFile: false,
+          uploadedFile: true,
+          file: action.payload.data
+        });
+      }
+
+  }
+
+  return state;
+}
+
+/***/ }),
+/* 729 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = uploadFile;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios_index__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios_index___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios_index__);
+
+
+function uploadFile(endpoint) {
+  var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  return function (dispatch) {
+    dispatch({ type: "UPLOAD_FILE" });
+    __WEBPACK_IMPORTED_MODULE_0_axios_index___default.a.post(endpoint, {
+      params: params
+    }).then(function (response) {
+      dispatch({
+        type: "UPLOAD_FILE_FULFILLED",
+        payload: response.data
+      });
+    }).catch(function (err) {
+      dispatch({ type: "UPLOAD_FILE_REJECTED", payload: err });
+    });
+  };
+}
 
 /***/ })
 /******/ ]);
