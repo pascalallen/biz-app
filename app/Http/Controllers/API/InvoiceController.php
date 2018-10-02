@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use QuickBooksOnline\API\DataService\DataService;
 use Auth;
+use Upload;
+use Illuminate\Support\Facades\Storage;
 
 class InvoiceController extends Controller
 {
@@ -207,5 +209,30 @@ class InvoiceController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function uploadDocument(Request $request)
+    {
+        if($request->filled(['name','description','filename','invoice_key','customer_key'])){
+
+            if(!Storage::disk('s3')->exists($request->filename)){
+
+                $upload = new Upload();
+                $upload->name = $request->name;
+                $upload->description = $request->description;
+                $upload->filename = $request->filename;
+                $upload->invoice_key = $request->invoice_key;
+                $upload->customer_key = $request->customer_key;
+
+                if($upload->save() && Storage::disk('s3')->put('uploads', $fileContents)){
+                    return response()->json([
+                        'data' => $response
+                    ], 200);
+                }else{
+                    //
+                }
+
+            }
+        }
     }
 }
