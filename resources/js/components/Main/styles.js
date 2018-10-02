@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Row } from 'react-bootstrap';
+import Dropzone from 'react-dropzone';
 
 export const CenterRow = styled(Row)`
   display: flex;
@@ -18,4 +19,8 @@ export const FloatRight = styled.span`
   float: right;
   font-weight: bold;
   color: #28a745;
+`;
+
+export const StyledDropzone = styled(Dropzone)`
+    margin-top: 10px;
 `;
