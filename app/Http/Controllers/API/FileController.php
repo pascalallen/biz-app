@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Upload;
+use App\Upload;
 use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
@@ -37,28 +37,29 @@ class FileController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->files);
-        if($request->filled(['name','description','filename','invoice_key','customer_key'])){
+        // Loop through files in POST request
+        foreach($request->files as $key => $value){
+            // Check if exists
+            $existsInBucket = Storage::disk('s3')->exists("uploads/$request->file($key)->getClientOriginalName()");
+            $existsInDb = Upload::where('invoice_key', $request->invoice_key)->where('customer_key',$request->customer_key)->where('filename',$request->filename)->exists();
 
-            if(!Storage::disk('s3')->exists($request->filename)){
+            if(!$existsInBucket && !$existsInDb){
 
                 $upload = new Upload();
-                $upload->name = $request->name;
-                $upload->description = $request->description;
-                $upload->filename = $request->filename;
+                $upload->name = 'test name'; // $request->name;
+                $upload->description = 'test description'; // $request->description;
+                $upload->filename = $request->file($key)->getClientOriginalName();
                 $upload->invoice_key = $request->invoice_key;
                 $upload->customer_key = $request->customer_key;
+                $upload->save();
 
-                if($upload->save() && Storage::disk('s3')->put('uploads', $fileContents)){
-                    return response()->json([
-                        'data' => $response
-                    ], 200);
-                }else{
-                    //
-                }
-
+                $request->file($key)->storeAs('uploads', $request->file($key)->getClientOriginalName(), 's3');
             }
         }
+
+        return response()->json([
+            'statusText' => 'Success',
+        ], 200);
     }
 
     /**

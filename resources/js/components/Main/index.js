@@ -115,15 +115,10 @@ class Main extends React.Component {
                                 <StyledDropzone
                                     accept="image/*"
                                     onDrop={(accepted, rejected) => {
-                                        accepted.map((file, i) => {
-                                            this.props.uploadFile(`/api/files`, {
-                                                file: file,
-                                                // name:
-                                                // description:
-                                                // filename:
-                                                // invoice_key:
-                                                // customer_key:
-                                            })
+                                        this.props.uploadFile(`/api/files`, {
+                                            invoice_key: invoice.Id,
+                                            customer_key: invoice.CustomerRef,
+                                            files: accepted,
                                         })
                                     }}
                                 >
