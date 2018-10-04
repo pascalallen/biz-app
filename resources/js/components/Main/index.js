@@ -54,27 +54,6 @@ class Main extends React.Component {
     });
   }
 
-//   uploadFiles(accepted, rejected){
-//     this.setState({ accepted, rejected });
-//     // accepted.map((file,i) => {
-//         this.props.uploadFile(`/api/files`, {
-//             files: accepted,
-//             // name:
-//             // description:
-//             // filename:
-//             // invoice_key:
-//             // customer_key:
-//         });
-
-//         // lastModifiedDate: Fri Jan 29 2016 12:49:00 GMT-0600 (Central Standard Time) {}
-//         // name: "hampton1-16_0030.jpg"
-//         // preview: "blob:http://matt-pascal.test/756141ff-6399-4dec-99d7-66f00230f1a4"
-//         // size: 2179049
-//         // type: "image/jpeg"
-//         // webkitRelativePath: ""
-//     // });
-//   }
-
   render () {
     return (
     <div className="container">
@@ -109,7 +88,7 @@ class Main extends React.Component {
                                 </ul>
                             </div>
                             <div className="col-2">
-                                <span className="badge badge-primary badge-pill">14</span>
+                                {invoice.FileCount > 0 && <span className="badge badge-primary badge-pill">{invoice.FileCount}</span>}
                             </div>
                             <div className="col-2">
                                 <StyledDropzone

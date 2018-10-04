@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Upload;
 use Illuminate\Support\Facades\Storage;
+use Zipper;
 
 class FileController extends Controller
 {
@@ -105,5 +106,21 @@ class FileController extends Controller
     public function destroy($id)
     {
         //
+    }
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function download(Request $request)
+    {
+        $uploads = Upload::where('invoice_key', $request->invoice_key)
+                         ->where('customer_key',$request->customer_key)
+                         ->get();
+        $uploads->map(function($upload,$i){
+
+        });
+        Storage::disk('s3')->download('file.jpg');
     }
 }

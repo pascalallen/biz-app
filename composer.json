@@ -14,7 +14,8 @@
         "laravelcollective/html": "^5.4.0",
         "league/flysystem-aws-s3-v3": "~1.0",
         "league/flysystem-cached-adapter": "~1.0",
-        "quickbooks/v3-php-sdk": "^5.0"
+        "quickbooks/v3-php-sdk": "^5.0",
+        "chumper/zipper": "1.0.x"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
