@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use QuickBooksOnline\API\DataService\DataService;
 use Auth;
+use App\Upload;
 
 class InvoiceController extends Controller
 {
@@ -76,8 +77,9 @@ class InvoiceController extends Controller
 			}
 
 			foreach ($invoices as $invoice) {
-				$i++;
-				$data->push($invoice);
+                $i++;
+                $invoice->FileCount = Upload::where('invoice_key',$invoice->Id)->where('customer_key', $invoice->CustomerRef)->count();
+                $data->push($invoice);
 			}
 		}
 

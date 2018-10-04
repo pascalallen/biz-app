@@ -66091,28 +66091,6 @@ var Main = function (_React$Component) {
                 customer: event.target.value
             });
         }
-
-        //   uploadFiles(accepted, rejected){
-        //     this.setState({ accepted, rejected });
-        //     // accepted.map((file,i) => {
-        //         this.props.uploadFile(`/api/files`, {
-        //             files: accepted,
-        //             // name:
-        //             // description:
-        //             // filename:
-        //             // invoice_key:
-        //             // customer_key:
-        //         });
-
-        //         // lastModifiedDate: Fri Jan 29 2016 12:49:00 GMT-0600 (Central Standard Time) {}
-        //         // name: "hampton1-16_0030.jpg"
-        //         // preview: "blob:http://matt-pascal.test/756141ff-6399-4dec-99d7-66f00230f1a4"
-        //         // size: 2179049
-        //         // type: "image/jpeg"
-        //         // webkitRelativePath: ""
-        //     // });
-        //   }
-
     }, {
         key: 'render',
         value: function render() {
@@ -66210,10 +66188,10 @@ var Main = function (_React$Component) {
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'div',
                                         { className: 'col-2' },
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        invoice.FileCount > 0 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'span',
                                             { className: 'badge badge-primary badge-pill' },
-                                            '14'
+                                            invoice.FileCount
                                         )
                                     ),
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -66224,15 +66202,10 @@ var Main = function (_React$Component) {
                                             {
                                                 accept: 'image/*',
                                                 onDrop: function onDrop(accepted, rejected) {
-                                                    accepted.map(function (file, i) {
-                                                        _this2.props.uploadFile('/api/files', {
-                                                            file: file
-                                                            // name:
-                                                            // description:
-                                                            // filename:
-                                                            // invoice_key:
-                                                            // customer_key:
-                                                        });
+                                                    _this2.props.uploadFile('/api/files', {
+                                                        invoice_key: invoice.Id,
+                                                        customer_key: invoice.CustomerRef,
+                                                        files: accepted
                                                     });
                                                 }
                                             },
@@ -68835,9 +68808,18 @@ function uploadFile(endpoint) {
 
   return function (dispatch) {
     dispatch({ type: "UPLOAD_FILE" });
-    __WEBPACK_IMPORTED_MODULE_0_axios_index___default.a.post(endpoint, {
-      params: params
-    }).then(function (response) {
+
+    var formData = new FormData();
+
+    params.files.map(function (file, i) {
+      formData.append("file_" + i, file);
+    });
+    formData.append('invoice_key', params.invoice_key);
+    formData.append('customer_key', params.customer_key);
+
+    var config = { headers: { 'Content-Type': 'multipart/form-data' } };
+
+    __WEBPACK_IMPORTED_MODULE_0_axios_index___default.a.post(endpoint, formData, config).then(function (response) {
       dispatch({
         type: "UPLOAD_FILE_FULFILLED",
         payload: response.data
