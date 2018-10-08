@@ -113,14 +113,20 @@ class FileController extends Controller
      * @param Request $request
      * @return void
      */
-    public function download(Request $request)
+    public function downloadFiles(Request $request)
     {
-        $uploads = Upload::where('invoice_key', $request->invoice_key)
+        // TODO: loop through records in db and grab each file from s3,
+        // then zip files in local storage,
+        // and delete from local storage after downloaded
+
+        $uploadRecords = Upload::where('invoice_key', $request->invoice_key)
                          ->where('customer_key',$request->customer_key)
                          ->get();
-        $uploads->map(function($upload,$i){
+
+        $uploadRecords->map(function($uploadRecord,$i){
 
         });
+
         Storage::disk('s3')->download('file.jpg');
     }
 }

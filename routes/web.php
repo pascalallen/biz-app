@@ -23,6 +23,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'auth'], function() {
     Route::resource('invoices', 'API\InvoiceController');
     Route::resource('customers', 'API\CustomerController');
     Route::resource('files', 'API\FileController');
+    Route::post('files/download', 'API\FileController');
     Route::get('user', function(){
         return Auth::user();
     });
