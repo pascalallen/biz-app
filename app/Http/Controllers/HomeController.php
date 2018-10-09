@@ -7,6 +7,7 @@ use Auth;
 use QuickBooksOnline\API\Core\ServiceContext;
 use QuickBooksOnline\API\DataService\DataService;
 use QuickBooksOnline\API\PlatformService\PlatformService;
+use App\Company;
 
 class HomeController extends Controller
 {
@@ -48,7 +49,55 @@ class HomeController extends Controller
             $accessToken = $OAuth2LoginHelper->exchangeAuthorizationCodeForToken($request->code, $request->realmId);
             $user->access_token = $accessToken->getAccessToken();
             $user->refresh_token = $accessToken->getRefreshToken();
+
+            $dataService = DataService::Configure(array(
+                'auth_mode' => 'oauth2',
+                'ClientID' => env('QUICKBOOKS_CLIENT_ID'),
+                'ClientSecret' => env('QUICKBOOKS_CLIENT_SECRET'),
+                'accessTokenKey' =>  $user->access_token,
+                'refreshTokenKey' => $user->refresh_token,
+                'QBORealmID' => $user->realm_id,
+                'baseUrl' => "Development" // For production: Production
+            ));
+
+            $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
+            $accessToken = $OAuth2LoginHelper->refreshToken();
+
+            $error = $OAuth2LoginHelper->getLastError();
+
+            if ($error) {
+                return response()->json([
+                    'statusText' => $error->getResponseBody(),
+                ], $error->getHttpStatusCode());
+            }
+
+            $user->access_token = $accessToken->getAccessToken();
+            $user->refresh_token = $accessToken->getRefreshToken();
+
+            $companyInfo = $dataService->FindAll('CompanyInfo');
+
+            foreach($companyInfo as $info){
+                $error = $dataService->getLastError();
+
+                if ($error) {
+                    return response()->json([
+                        'statusText' => $error->getResponseBody(),
+                    ], $error->getHttpStatusCode());
+                }
+
+                // Add company
+                $company = new Company();
+                $company->quickbooks_id = $info->Id;
+                $company->name = $info->CompanyName;
+                $company->email = $info->CompanyEmailAddr;
+                $company->save();
+                 // Set relationship to company in company_user
+                $user->companies()->attach($company->id);
+            }
+
             $user->save();
+
+            $dataService->updateOAuth2Token($accessToken);
         }
         return view('home');
     }
