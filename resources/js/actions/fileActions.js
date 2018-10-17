@@ -11,6 +11,7 @@ export function uploadFile(endpoint, params = {}){
     })
     formData.append('invoice_key', params.invoice_key);
     formData.append('customer_key', params.customer_key);
+    formData.append('customer_name', params.customer_name);
 
     const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
@@ -38,6 +39,7 @@ export function downloadFiles(endpoint, params = {}){
       })
       formData.append('invoice_key', params.invoice_key);
       formData.append('customer_key', params.customer_key);
+      formData.append('customer_name', params.customer_name);
 
       const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 

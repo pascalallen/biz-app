@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Upload;
 use Illuminate\Support\Facades\Storage;
 use Zipper;
+use Auth;
 
 class FileController extends Controller
 {
@@ -38,23 +39,30 @@ class FileController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
+        $company = $user->companies->first();
         // Loop through files in POST request
         foreach($request->files as $key => $value){
             // Check if exists
-            $existsInBucket = Storage::disk('s3')->exists("uploads/$request->file($key)->getClientOriginalName()");
-            $existsInDb = Upload::where('invoice_key', $request->invoice_key)->where('customer_key',$request->customer_key)->where('filename',$request->filename)->exists();
+            $existsInBucket = Storage::disk('s3')
+                ->exists("uploads/$company->name/$request->customer_name/$request->invoice_key/$request->file($key)->getClientOriginalName()");
+            $existsInDb = Upload::where('invoice_key', $request->invoice_key)
+                ->where('customer_key',$request->customer_key)
+                ->where('filename',$request->filename)
+                ->exists();
 
             if(!$existsInBucket && !$existsInDb){
-
                 $upload = new Upload();
                 $upload->name = 'test name'; // $request->name;
                 $upload->description = 'test description'; // $request->description;
                 $upload->filename = $request->file($key)->getClientOriginalName();
                 $upload->invoice_key = $request->invoice_key;
                 $upload->customer_key = $request->customer_key;
+                $upload->user_id = $user->id;
+                $upload->company_id = $company->id;
                 $upload->save();
 
-                $request->file($key)->storeAs('uploads', $request->file($key)->getClientOriginalName(), 's3');
+                $request->file($key)->storeAs("uploads/$company->name/$request->customer_name/$request->invoice_key", $request->file($key)->getClientOriginalName(), 's3');
             }
         }
 
@@ -123,10 +131,10 @@ class FileController extends Controller
                          ->where('customer_key',$request->customer_key)
                          ->get();
 
-        $uploadRecords->map(function($uploadRecord,$i){
-
+        $files = collect();
+        $uploadRecords->map(function($uploadRecord,$i) use ($files) {
+            $files->push(Storage::disk('s3')->get($uploadRecord));
         });
 
-        Storage::disk('s3')->download('file.jpg');
     }
 }

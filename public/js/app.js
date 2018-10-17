@@ -66055,7 +66055,8 @@ var Main = function (_React$Component) {
             startDate: __WEBPACK_IMPORTED_MODULE_2_moment___default()().subtract(1, 'days'),
             endDate: __WEBPACK_IMPORTED_MODULE_2_moment___default()(),
             accepted: [],
-            rejected: []
+            rejected: [],
+            selectedCustomer: null
         };
 
         _this.getCustomerInvoices = _this.getCustomerInvoices.bind(_this);
@@ -66086,9 +66087,10 @@ var Main = function (_React$Component) {
         }
     }, {
         key: 'getCustomerInvoices',
-        value: function getCustomerInvoices(event) {
+        value: function getCustomerInvoices(customer, e) {
+            this.setState({ selectedCustomer: customer.DisplayName });
             this.props.fetchAllInvoices('/api/invoices', {
-                customer: event.target.value
+                customer: customer.Id
             });
         }
     }, {
@@ -66116,8 +66118,10 @@ var Main = function (_React$Component) {
                             this.props.customer.all && this.props.customer.all.map(function (customer, i) {
                                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     __WEBPACK_IMPORTED_MODULE_7_react_bootstrap__["c" /* ListGroupItem */],
-                                    { key: i, value: customer.Id, onClick: _this2.getCustomerInvoices, className: 'd-flex justify-content-between align-items-center' },
-                                    customer.CompanyName ? customer.CompanyName : customer.DisplayName ? customer.DisplayName : customer.FullyQualifiedName
+                                    { key: i, onClick: function onClick(e) {
+                                            return _this2.getCustomerInvoices(customer, e);
+                                        }, className: 'd-flex justify-content-between align-items-center' },
+                                    customer.DisplayName
                                 );
                             })
                         )
@@ -66205,6 +66209,7 @@ var Main = function (_React$Component) {
                                                     _this2.props.uploadFile('/api/files', {
                                                         invoice_key: invoice.Id,
                                                         customer_key: invoice.CustomerRef,
+                                                        customer_name: _this2.state.selectedCustomer,
                                                         files: accepted
                                                     });
                                                 }
@@ -68799,6 +68804,7 @@ function fetchAuth(endpoint) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = uploadFile;
+/* unused harmony export downloadFiles */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios_index__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios_index___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios_index__);
 
@@ -68816,6 +68822,7 @@ function uploadFile(endpoint) {
     });
     formData.append('invoice_key', params.invoice_key);
     formData.append('customer_key', params.customer_key);
+    formData.append('customer_name', params.customer_name);
 
     var config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
@@ -68826,6 +68833,34 @@ function uploadFile(endpoint) {
       });
     }).catch(function (err) {
       dispatch({ type: "UPLOAD_FILE_REJECTED", payload: err });
+    });
+  };
+}
+
+function downloadFiles(endpoint) {
+  var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  return function (dispatch) {
+    dispatch({ type: "DOWNLOAD_FILES" });
+
+    var formData = new FormData();
+
+    params.files.map(function (file, i) {
+      formData.append("file_" + i, file);
+    });
+    formData.append('invoice_key', params.invoice_key);
+    formData.append('customer_key', params.customer_key);
+    formData.append('customer_name', params.customer_name);
+
+    var config = { headers: { 'Content-Type': 'multipart/form-data' } };
+
+    __WEBPACK_IMPORTED_MODULE_0_axios_index___default.a.post(endpoint, formData, config).then(function (response) {
+      dispatch({
+        type: "DOWNLOAD_FILES_FULFILLED",
+        payload: response.data
+      });
+    }).catch(function (err) {
+      dispatch({ type: "DOWNLOAD_FILES_REJECTED", payload: err });
     });
   };
 }

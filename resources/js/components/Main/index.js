@@ -24,6 +24,7 @@ class Main extends React.Component {
       endDate: moment(),
       accepted: [],
       rejected: [],
+      selectedCustomer: null,
     };
 
     this.getCustomerInvoices = this.getCustomerInvoices.bind(this);
@@ -48,9 +49,10 @@ class Main extends React.Component {
     });
   }
 
-  getCustomerInvoices(event){
+  getCustomerInvoices(customer, e){
+    this.setState({selectedCustomer: customer.DisplayName});
     this.props.fetchAllInvoices(`/api/invoices`, {
-      customer: event.target.value,
+      customer: customer.Id,
     });
   }
 
@@ -63,13 +65,11 @@ class Main extends React.Component {
                 : <div className="col-6">
                     <h4>Customers</h4>
                     <ListGroup>
-                    {this.props.customer.all && this.props.customer.all.map((customer,i) => (
-                        <ListGroupItem key={i} value={customer.Id} onClick={this.getCustomerInvoices} className="d-flex justify-content-between align-items-center">
-                        {customer.CompanyName ? customer.CompanyName
-                            : customer.DisplayName ? customer.DisplayName
-                            : customer.FullyQualifiedName}
-                        </ListGroupItem>
-                    ))}
+                        {this.props.customer.all && this.props.customer.all.map((customer,i) => (
+                            <ListGroupItem key={i} onClick={(e) => this.getCustomerInvoices(customer, e)} className="d-flex justify-content-between align-items-center">
+                                {customer.DisplayName}
+                            </ListGroupItem>
+                        ))}
                     </ListGroup>
                 </div>
                 }
@@ -97,6 +97,7 @@ class Main extends React.Component {
                                         this.props.uploadFile(`/api/files`, {
                                             invoice_key: invoice.Id,
                                             customer_key: invoice.CustomerRef,
+                                            customer_name: this.state.selectedCustomer,
                                             files: accepted,
                                         })
                                     }}
